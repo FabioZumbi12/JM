@@ -37,7 +37,6 @@ public class JM extends JavaPlugin {
 		}
 		
 		getCommand("jm").setExecutor(new CommandJm(this));
-		
 		getLogging().info("JoinMessages has been enabled.");
 		
 	}
