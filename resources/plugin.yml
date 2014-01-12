@@ -1,0 +1,8 @@
+name: JM
+version: 1.0
+main: net.winneonsword.JM.JM
+
+commands:
+    jm:
+        description: 'The main JM command.'
+        usage: '/jm ?'
