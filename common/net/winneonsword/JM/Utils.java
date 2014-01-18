@@ -2,7 +2,9 @@ package net.winneonsword.JM;
 
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Utils {
@@ -13,8 +15,8 @@ public class Utils {
 	
 	public Utils(){
 		
-		this.consoleColours = new HashMap<String, String>();
 		this.JM = "&7JM &e// &7";
+		this.consoleColours = new HashMap<String, String>();
 		
 		consoleColours.put("0", "\u001B[0;30m");
 		consoleColours.put("1", "\u001B[0;34m");
@@ -44,6 +46,24 @@ public class Utils {
 	public static void s(Player p, String[] message){
 		
 		p.sendMessage(AS(message));
+		
+	}
+	
+	public static void ss(CommandSender s, String message){
+		
+		s.sendMessage(AS(JM + message));
+		
+	}
+	
+	public static void ss(CommandSender s, String[] message){
+		
+		s.sendMessage(AS(message));
+		
+	}
+	
+	public static void b(String message){
+		
+		Bukkit.broadcastMessage(AS(message));
 		
 	}
 	
@@ -89,6 +109,20 @@ public class Utils {
 		
 	}
 	
+	public static int random(int min, int max){
+		
+		int range = max - min + 1;
+		
+		return (int) (range * Math.random() + min);
+		
+	}
+	
+	public static void delay(JM main, Runnable run, int ticks){
+		
+		Bukkit.getScheduler().scheduleSyncDelayedTask(main, run, ticks);
+		
+	}
+	
 	public static String stichString(String[] array, int min){
 		
 		return stichString(array, min, -1);
@@ -100,6 +134,10 @@ public class Utils {
 		if (max == -1){
 			
 			max = array.length;
+			
+		} else {
+			
+			max++;
 			
 		}
 		

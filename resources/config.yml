@@ -3,7 +3,7 @@ colours:
     playername: '7'
 global:
     join:
-    - 'Look out, it's %p joining the server!'
+    - 'Look out, it''s %p joining the server!'
     - 'Holy batman, %p has appeared!'
     - 'Oh! Look who decided to join us today! (%p)'
     leave:
@@ -15,8 +15,10 @@ player:
         join:
         - 'Would you look at that! %p has joined!'
         - 'The one and only %p has appeared!'
-        - 'I don't know, but it looks like %p has come to join us!'
+        - 'I don''t know, but it looks like %p has come to join us!'
         leave:
         - 'Wave goodbye to %p!'
         - '%p has other important things to do now.'
         - 'It appears a certain individual has left us for now. (%p)'
+users:
+- WinneonSword
