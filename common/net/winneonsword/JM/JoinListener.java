@@ -25,18 +25,15 @@ public class JoinListener implements Listener {
 	public void onJoin(PlayerJoinEvent e){
 		
 		final Player p = e.getPlayer();
+		e.setJoinMessage(null);
 		
-		if (!(p.hasPlayedBefore())){
+		if (!(main.getUtils().getUsers().contains(p.getName())) || !(p.hasPlayedBefore())){
 			
 			main.getUtils().setupPlayer(p.getName());
 			
 		}
 		
 		JMPlayer jmp = main.getUtils().getPlayer(p.getName());
-		e.setJoinMessage(null);
-		
-		final String message = main.getUtils().getMessageColour();
-		final String playername = main.getUtils().getPlayerColour();
 		String m = null;
 		
 		if (jmp.hasJoinMessages()){
@@ -47,7 +44,7 @@ public class JoinListener implements Listener {
 			
 		} else {
 			
-			List<String> list = main.getData().getConfig("config").getStringList("global.join");
+			List<String> list = main.getUtils().getJoinMessages();
 			int rand = random(0, list.size() - 1);
 			m = list.get(rand);
 			
@@ -55,22 +52,23 @@ public class JoinListener implements Listener {
 		
 		final String mm = m;
 		
-		delay(main, new Runnable(){
+		delay(new Runnable(){
 			
 			public void run(){
 				
-				b("&" + message + mm.replace("%p", "&" + playername + p.getDisplayName() + "&" + message));
+				b(translateMessage(p, mm));
 				
 			}
 			
-		}, 10);
+		}, 5);
 		
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onLeave(PlayerQuitEvent e){
 		
-final Player p = e.getPlayer();
+		final Player p = e.getPlayer();
+		e.setQuitMessage(null);
 		
 		if (!(p.hasPlayedBefore())){
 			
@@ -79,10 +77,6 @@ final Player p = e.getPlayer();
 		}
 		
 		JMPlayer jmp = main.getUtils().getPlayer(p.getName());
-		e.setQuitMessage(null);
-		
-		final String message = main.getUtils().getMessageColour();
-		final String playername = main.getUtils().getPlayerColour();
 		String m = null;
 		
 		if (jmp.hasLeaveMessages()){
@@ -93,7 +87,7 @@ final Player p = e.getPlayer();
 			
 		} else {
 			
-			List<String> list = main.getData().getConfig("config").getStringList("global.leave");
+			List<String> list = main.getUtils().getLeaveMessages();
 			int rand = random(0, list.size() - 1);
 			m = list.get(rand);
 			
@@ -101,15 +95,15 @@ final Player p = e.getPlayer();
 		
 		final String mm = m;
 		
-		delay(main, new Runnable(){
+		delay(new Runnable(){
 			
 			public void run(){
 				
-				b("&" + message + mm.replace("%p", "&" + playername + p.getDisplayName() + "&" + message));
+				b(translateMessage(p, mm));
 				
 			}
 			
-		}, 10);
+		}, 5);
 		
 	}
 	

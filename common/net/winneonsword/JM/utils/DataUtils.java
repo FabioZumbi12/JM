@@ -17,6 +17,9 @@ public class DataUtils {
 	private List<String> users;
 	private HashMap<String, JMPlayer> players;
 	
+	private List<String> join;
+	private List<String> leave;
+	
 	public DataUtils(JM main){
 		
 		this.main = main;
@@ -63,6 +66,18 @@ public class DataUtils {
 		
 	}
 	
+	public List<String> getJoinMessages(){
+		
+		return join;
+		
+	}
+	
+	public List<String> getLeaveMessages(){
+		
+		return leave;
+		
+	}
+	
 	public void setMessageColour(String colour){
 		
 		message = colour;
@@ -78,6 +93,18 @@ public class DataUtils {
 	public void setUsers(List<String> users){
 		
 		this.users = users;
+		
+	}
+	
+	public void setJoinMessages(List<String> list){
+		
+		join = list;
+		
+	}
+	
+	public void setLeaveMessages(List<String> list){
+		
+		leave = list;
 		
 	}
 	
@@ -98,6 +125,30 @@ public class DataUtils {
 	public void addUser(String name){
 		
 		users.add(name);
+		
+	}
+	
+	public void addJoinMessage(String message){
+		
+		join.add(message);
+		
+	}
+	
+	public void addLeaveMessage(String message){
+		
+		leave.add(message);
+		
+	}
+	
+	public void removeJoinMessage(String message){
+		
+		join.remove(message);
+		
+	}
+	
+	public void removeLeaveMessage(String message){
+		
+		leave.remove(message);
 		
 	}
 	

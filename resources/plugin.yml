@@ -1,8 +1,61 @@
 name: JM
-version: 1.0
+version: 2.0
 main: net.winneonsword.JM.JM
 
 commands:
     jm:
         description: 'The main JM command.'
         usage: '/jm ?'
+permissions:
+    jm.*:
+        description: Gives access to all commands within /jm.
+        children:
+            jm.disable: true
+            jm.add: true
+            jm.remove: true
+    jm.add:
+        description: Gives access to all commands regarding adding messages to JM.
+        children:
+            jm.add.join: true
+            jm.add.leave: true
+    jm.remove:
+        description: Gives access to all commands regarding removing messages from JM.
+        children:
+            jm.remove.join: true
+            jm.remove.leave: true
+    jm.add.join:
+        description: Gives access to add join messages to JM.
+    jm.add.leave:
+        description: Gives access to add leave messages to JM.
+    jm.remove.join:
+        description: Gives access to remove join messages from JM.
+    jm.remove.leave:
+        description: Gives access to remove leave messages from JM.
+    joinmessages.*:
+        description: Legacy permission node for jm.*.
+        children:
+            jm.*: true
+    joinmessages.add:
+        description: Legacy permission node for jm.add.
+        children:
+            jm.add: true
+    joinmessages.remove:
+        description: Legacy permission node for jm.remove.
+        children:
+            jm.remove: true
+    joinmessages.add.join:
+        description: Legacy permission node for jm.add.join.
+        children:
+            jm.add.join: true
+    joinmessages.add.leave:
+        description: Legacy permission node for jm.add.leave.
+        children:
+            jm.add.leave: true
+    joinmessages.remove.join:
+        description: Legacy permission node for jm.remove.join.
+        children:
+            jm.remove.join: true
+    joinmessages.remove.leave:
+        description: Legacy permission node for jm.remove.leave.
+        children:
+            jm.remove.leave: true

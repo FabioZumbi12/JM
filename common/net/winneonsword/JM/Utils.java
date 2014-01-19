@@ -4,16 +4,21 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Utils {
 	
+	
 	public static String JM;
 	
+	private static JM main;
 	private static HashMap<String, String> consoleColours;
 	
-	public Utils(){
+	public Utils(JM main){
+		
+		this.main = main;
 		
 		this.JM = "&7JM &e// &7";
 		this.consoleColours = new HashMap<String, String>();
@@ -117,9 +122,47 @@ public class Utils {
 		
 	}
 	
-	public static void delay(JM main, Runnable run, int ticks){
+	public static void delay(Runnable run, int ticks){
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(main, run, ticks);
+		
+	}
+	
+	public static String translateMessage(Player p, String message){
+		
+		String mm = main.getUtils().getMessageColour();
+		String pp = main.getUtils().getPlayerColour();
+		
+		return "&" + mm + message.replace("%p", "&" + pp + p.getDisplayName() + "&" + mm);
+		
+	}
+	
+	public static String translateMessage(OfflinePlayer p, String message){
+		
+		String mm = main.getUtils().getMessageColour();
+		String pp = main.getUtils().getPlayerColour();
+		
+		return "&" + mm + message.replace("%p", "&" + pp + p.getName() + "&" + mm);
+		
+	}
+	
+	public static String translateMessage(CommandSender s, String message){
+		
+		String mm = main.getUtils().getMessageColour();
+		String pp = main.getUtils().getPlayerColour();
+		
+		if (s instanceof Player){
+			
+			Player p = (Player) s;
+			message = "&" + mm + message.replace("%p", "&" + pp + p.getDisplayName() + "&" + mm);
+			
+		} else {
+			
+			message = "&" + mm + message.replace("%p", "&" + pp + s.getName() + "&" + mm);
+			
+		}
+		
+		return message;
 		
 	}
 	

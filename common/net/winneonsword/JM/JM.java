@@ -2,6 +2,8 @@ package net.winneonsword.JM;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,7 +25,7 @@ public class JM extends JavaPlugin {
 	public void onEnable(){
 		
 		pm = getServer().getPluginManager();
-		new Utils();
+		new Utils(this);
 		
 		logUtils = new LogUtils(this);
 		configUtils = new ConfigUtils(this);
@@ -47,7 +49,7 @@ public class JM extends JavaPlugin {
 		List<String> users = getData().getConfig("config").getStringList("users");
 		getUtils().setUsers(users);
 		
-		getLogging().info('e', "Loading " + users.size() + " users.");
+		getLogging().info('e', "Loading " + (users.size() + Bukkit.getOnlinePlayers().length) + " users.");
 		
 		for (String n : getUtils().getUsers()){
 			
@@ -55,8 +57,21 @@ public class JM extends JavaPlugin {
 			
 		}
 		
+		for (Player p : Bukkit.getOnlinePlayers()){
+			
+			if (!(getUtils().getUsers().contains(p.getName()))){
+				
+				getUtils().setupPlayer(p.getName());
+				
+			}
+			
+		}
+		
 		getUtils().setMessageColour(getData().getConfig("config").getString("colours.message"));
 		getUtils().setPlayerColour(getData().getConfig("config").getString("colours.playername"));
+		
+		getUtils().setJoinMessages(getData().getConfig("config").getStringList("global.join"));
+		getUtils().setLeaveMessages(getData().getConfig("config").getStringList("global.leave"));
 		
 		getLogging().info("JoinMessages has been enabled.");
 		
