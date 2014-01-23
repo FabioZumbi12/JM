@@ -90,6 +90,12 @@ public class JM extends JavaPlugin {
 		
 		getData().getConfig("config").set("users", users);
 		
+		getData().getConfig("config").set("colours.message", getUtils().getMessageColour());
+		getData().getConfig("config").set("colours.playername", getUtils().getPlayerColour());
+		
+		getData().getConfig("config").set("global.join", getUtils().getJoinMessages());
+		getData().getConfig("config").set("global.leave", getUtils().getLeaveMessages());
+		
 		for (String c : configs){
 			
 			getData().saveConfig(c);

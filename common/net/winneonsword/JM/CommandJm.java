@@ -57,12 +57,14 @@ public class CommandJm implements CommandExecutor {
 						
 						if (args.length == 1){
 							
-							ss(s, new String[] {
+							ss(s, new String[]{
 									
-								JM + "Join Help Panel",
-								"&7- &e/jm join add <message> &6// &eAdd a join message.",
-								"&7- &e/jm join remove <id> &6// &eRemove a join message.",
-								"&7- &e/jm join list [player] &6// &eList all of the current join messages."
+									JM + "Join Help Panel",
+									"&7- &e/jm join add <message> &6// &eAdd a join message.",
+									"&7- &e/jm join add player <player> <message> &6// &eAdd a join message to a player.",
+									"&7- &e/jm join remove <id> &6// &eRemove a join message.",
+									"&7- &e/jm join remove player <player> <id> &6// &eRemove a join message from a player.",
+									"&7- &e/jm join list [player] &6// &eList all of the current join messages."
 									
 							});
 							
@@ -76,6 +78,75 @@ public class CommandJm implements CommandExecutor {
 							
 							case "add":
 								
+								if (args.length == 2){
+									
+									ss(s, "&c/jm join add <message>");
+									
+								} else {
+									
+									if (args[2].equalsIgnoreCase("player")){
+										
+										if (args.length < 5){
+											
+											ss(s, "&c/jm join add player <player> <message>");
+											
+										} else {
+											
+											JMPlayer jmp = main.getUtils().getPlayer(args[3]);
+											
+											if (jmp == null){
+												
+												ss(s, "&cThat player has never joined!");
+												
+											} else {
+												
+												String message = stitchString(args, 5);
+												
+												if (!(message.contains("%p"))){
+													
+													ss(s, "&cThe %p variable is not present in the message!");
+													
+												} else {
+													
+													jmp.addJoinMessage(message);
+													
+													ss(s, new String[] {
+															
+															JM + "Added the join message for the player &7" + jmp.getName() + "&7:",
+															translateMessage(s, message)
+															
+													});
+													
+												}
+												
+											}
+											
+										}
+										
+									} else {
+										
+										String message = stitchString(args, 3);
+										
+										if (!(message.contains("%p"))){
+											
+											ss(s, "&cThe %p variable is not present in the message!");
+											
+										} else {
+											
+											main.getUtils().addJoinMessage(message);
+											
+											ss(s, new String[] {
+													
+													JM + "Added the join message:",
+													translateMessage(s, message)
+													
+											});
+											
+										}
+										
+									}
+									
+								}
 								
 								break;
 								
@@ -165,9 +236,11 @@ public class CommandJm implements CommandExecutor {
 									
 									JM + "Leave Help Panel",
 									"&7- &e/jm leave add <message> &6// &eAdd a leave message.",
+									"&7- &e/jm leave add player <player> <message> &6// &eAdd a leave message to a player.",
 									"&7- &e/jm leave remove <id> &6// &eRemove a leave message.",
-									"&7- &e/jm leave list &6// &eList all of the current leave messages."
-										
+									"&7- &e/jm leave remove player <player> <id> &6// &eRemove a leave message from a player.",
+									"&7- &e/jm leave list [player] &6// &eList all of the current leave messages."
+									
 								});
 							
 						} else {

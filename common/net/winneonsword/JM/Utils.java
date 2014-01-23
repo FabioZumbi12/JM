@@ -166,13 +166,15 @@ public class Utils {
 		
 	}
 	
-	public static String stichString(String[] array, int min){
+	public static String stitchString(String[] array, int min){
 		
-		return stichString(array, min, -1);
+		return stitchString(array, min, -1);
 		
 	}
 	
-	public static String stichString(String[] array, int min, int max){
+	public static String stitchString(String[] array, int min, int max){
+		
+		min--;
 		
 		if (max == -1){
 			
