@@ -2,9 +2,9 @@ package net.winneonsword.JM.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -89,25 +89,31 @@ public class ConfigUtils {
 	
 	public boolean saveConfig(String name){
 		
-		YamlConfiguration config = getConfig(name);
-		
-		if (config == null){
+		try {
 			
-			return false;
+			Field field = main.getClass().getDeclaredField("config");
+			field.setAccessible(true);
 			
-		} else {
+			YamlConfiguration config = (YamlConfiguration) field.get(main);
 			
-			try {
+			if (config == null){
+				
+				return false;
+				
+			} else {
 				
 				config.save(getFile(name));
 				
 				return true;
 				
-			} catch (IOException e){
-				
-				return false;
-				
 			}
+			
+		} catch (Exception e){
+			
+			main.getLogging().severe("Failed to save the config '" + name + "'.");
+			e.printStackTrace();
+			
+			return false;
 			
 		}
 		

@@ -156,8 +156,8 @@ public class DataUtils {
 		
 		JMPlayer p = getPlayer(name);
 		
-		main.getData().getConfig("config").set("player." + name + ".join", p.getJoinMessages());
-		main.getData().getConfig("config").set("player." + name + ".leave", p.getLeaveMessages());
+		main.config.set("player." + name + ".join", p.getJoinMessages());
+		main.config.set("player." + name + ".leave", p.getLeaveMessages());
 		
 	}
 	
@@ -165,8 +165,8 @@ public class DataUtils {
 		
 		JMPlayer p = new JMPlayer(name);
 		
-		List<String> join = main.getData().getConfig("config").getStringList("player." + name + ".join");
-		List<String> leave = main.getData().getConfig("config").getStringList("player." + name + ".leave");
+		List<String> join = main.config.getStringList("player." + name + ".join");
+		List<String> leave = main.config.getStringList("player." + name + ".leave");
 		
 		if (join.isEmpty()){
 			

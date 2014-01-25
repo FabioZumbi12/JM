@@ -3,6 +3,7 @@ package net.winneonsword.JM;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,6 +13,8 @@ import net.winneonsword.JM.utils.DataUtils;
 import net.winneonsword.JM.utils.LogUtils;
 
 public class JM extends JavaPlugin {
+	
+	public YamlConfiguration config;
 	
 	private PluginManager pm;
 	
@@ -43,10 +46,12 @@ public class JM extends JavaPlugin {
 			
 		}
 		
+		this.config = getData().getConfig("config");
+		
 		getCommand("jm").setExecutor(new CommandJm(this));
 		pm.registerEvents(new JoinListener(this), this);
 		
-		List<String> users = getData().getConfig("config").getStringList("users");
+		List<String> users = config.getStringList("users");
 		getUtils().setUsers(users);
 		
 		getLogging().info('e', "Loading " + (users.size() + Bukkit.getOnlinePlayers().length) + " users.");
@@ -67,11 +72,11 @@ public class JM extends JavaPlugin {
 			
 		}
 		
-		getUtils().setMessageColour(getData().getConfig("config").getString("colours.message"));
-		getUtils().setPlayerColour(getData().getConfig("config").getString("colours.playername"));
+		getUtils().setMessageColour(config.getString("colours.message"));
+		getUtils().setPlayerColour(config.getString("colours.playername"));
 		
-		getUtils().setJoinMessages(getData().getConfig("config").getStringList("global.join"));
-		getUtils().setLeaveMessages(getData().getConfig("config").getStringList("global.leave"));
+		getUtils().setJoinMessages(config.getStringList("global.join"));
+		getUtils().setLeaveMessages(config.getStringList("global.leave"));
 		
 		getLogging().info("JoinMessages has been enabled.");
 		
@@ -88,13 +93,13 @@ public class JM extends JavaPlugin {
 			
 		}
 		
-		getData().getConfig("config").set("users", users);
+		config.set("users", users);
 		
-		getData().getConfig("config").set("colours.message", getUtils().getMessageColour());
-		getData().getConfig("config").set("colours.playername", getUtils().getPlayerColour());
+		config.set("colours.message", getUtils().getMessageColour());
+		config.set("colours.playername", getUtils().getPlayerColour());
 		
-		getData().getConfig("config").set("global.join", getUtils().getJoinMessages());
-		getData().getConfig("config").set("global.leave", getUtils().getLeaveMessages());
+		config.set("global.join", getUtils().getJoinMessages());
+		config.set("global.leave", getUtils().getLeaveMessages());
 		
 		for (String c : configs){
 			

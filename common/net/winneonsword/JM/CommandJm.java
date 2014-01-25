@@ -57,7 +57,7 @@ public class CommandJm implements CommandExecutor {
 						
 						if (args.length == 1){
 							
-							ss(s, new String[]{
+							ss(s, new String[] {
 									
 									JM + "Join Help Panel",
 									"&7- &e/jm join add <message> &6// &eAdd a join message.",
@@ -78,69 +78,73 @@ public class CommandJm implements CommandExecutor {
 							
 							case "add":
 								
-								if (args.length == 2){
+								if (checkPerm(s, "jm.add.join")){
 									
-									ss(s, "&c/jm join add <message>");
-									
-								} else {
-									
-									if (args[2].equalsIgnoreCase("player")){
+									if (args.length == 2){
 										
-										if (args.length < 5){
+										ss(s, "&c/jm join add <message>");
+										
+									} else {
+										
+										if (args[2].equalsIgnoreCase("player")){
 											
-											ss(s, "&c/jm join add player <player> <message>");
-											
-										} else {
-											
-											JMPlayer jmp = main.getUtils().getPlayer(args[3]);
-											
-											if (jmp == null){
+											if (args.length < 5){
 												
-												ss(s, "&cThat player has never joined!");
+												ss(s, "&c/jm join add player <player> <message>");
 												
 											} else {
 												
-												String message = stitchString(args, 5);
+												JMPlayer jmp = main.getUtils().getPlayer(args[3]);
 												
-												if (!(message.contains("%p"))){
+												if (jmp == null){
 													
-													ss(s, "&cThe %p variable is not present in the message!");
+													ss(s, "&cThat player has never joined!");
 													
 												} else {
 													
-													jmp.addJoinMessage(message);
+													String message = stitchString(args, 5);
 													
-													ss(s, new String[] {
-															
-															JM + "Added the join message for the player &7" + jmp.getName() + "&7:",
-															translateMessage(s, message)
-															
-													});
+													if (!(message.contains("%p"))){
+														
+														ss(s, "&cThe %p variable is not present in the message!");
+														
+													} else {
+														
+														jmp.addJoinMessage(message);
+														
+														ss(s, new String[] {
+																
+																JM + "Added the join message for the player &7" + jmp.getName() + "&7:",
+																translateMessage(s, message)
+																
+														});
+														
+													}
 													
 												}
 												
 											}
 											
-										}
-										
-									} else {
-										
-										String message = stitchString(args, 3);
-										
-										if (!(message.contains("%p"))){
-											
-											ss(s, "&cThe %p variable is not present in the message!");
-											
 										} else {
 											
-											main.getUtils().addJoinMessage(message);
+											String message = stitchString(args, 3);
 											
-											ss(s, new String[] {
-													
-													JM + "Added the join message:",
-													translateMessage(s, message)
-													
-											});
+											if (!(message.contains("%p"))){
+												
+												ss(s, "&cThe %p variable is not present in the message!");
+												
+											} else {
+												
+												main.getUtils().addJoinMessage(message);
+												
+												ss(s, new String[] {
+														
+														JM + "Added the join message:",
+														translateMessage(s, message)
+														
+												});
+												
+											}
 											
 										}
 										
@@ -152,6 +156,101 @@ public class CommandJm implements CommandExecutor {
 								
 							case "remove":
 								
+								if (checkPerm(s, "jm.remove.join")){
+									
+									if (args.length == 2){
+										
+										ss(s, "&c/jm join remove <id>");
+										
+									} else {
+										
+										if (args[2].equalsIgnoreCase("player")){
+											
+											if (args.length < 5){
+												
+												ss(s, "&c/jm join remove player <player> <id>");
+												
+											} else {
+												
+												JMPlayer jmp = main.getUtils().getPlayer(args[3]);
+												
+												if (jmp == null){
+													
+													ss(s, "&cThat player has never joined!");
+													
+												} else {
+													
+													try {
+														
+														Integer.parseInt(args[4]);
+														
+													} catch (Exception e){
+														
+														ss(s, "&cThe ID you entered is not a valid number!");
+														
+														return true;
+														
+													}
+													
+													if (jmp.getJoinMessages().size() < Integer.parseInt(args[4]) + 1){
+														
+														ss(s, "The player &7" + jmp.getName() + " &7does not have the ID!");
+														
+													} else {
+														
+														String message = jmp.getJoinMessages().get(Integer.parseInt(args[4]));												
+														jmp.removeJoinMessage(message);
+														
+														ss(s, new String[] {
+																
+																JM + "Removed the join message for the player &7" + jmp.getName() + "&7:",
+																translateMessage(s, message)
+																
+														});
+														
+													}
+													
+												}
+												
+											}
+											
+										} else {
+											
+											try {
+												
+												Integer.parseInt(args[2]);
+												
+											} catch (Exception e){
+												
+												ss(s, "&cThe ID you entered is not a valid number!");
+												
+												return true;
+												
+											}
+											
+											if (main.getUtils().getJoinMessages().size() < Integer.parseInt(args[2]) + 1){
+												
+												ss(s, "ID not found!");
+												
+											} else {
+												
+												String message = main.getUtils().getJoinMessages().get(Integer.parseInt(args[2]));												
+												main.getUtils().removeJoinMessage(message);
+												
+												ss(s, new String[] {
+														
+														JM + "Removed the join message:",
+														translateMessage(s, message)
+														
+												});
+												
+											}
+											
+										}
+										
+									}
+									
+								}
 								
 								break;
 								
@@ -241,7 +340,7 @@ public class CommandJm implements CommandExecutor {
 									"&7- &e/jm leave remove player <player> <id> &6// &eRemove a leave message from a player.",
 									"&7- &e/jm leave list [player] &6// &eList all of the current leave messages."
 									
-								});
+							});
 							
 						} else {
 							
@@ -253,11 +352,179 @@ public class CommandJm implements CommandExecutor {
 							
 							case "add":
 								
+								if (checkPerm(s, "jm.add.leave")){
+									
+									if (args.length == 2){
+										
+										ss(s, "&c/jm leave add <message>");
+										
+									} else {
+										
+										if (args[2].equalsIgnoreCase("player")){
+											
+											if (args.length < 5){
+												
+												ss(s, "&c/jm leave add player <player> <message>");
+												
+											} else {
+												
+												JMPlayer jmp = main.getUtils().getPlayer(args[3]);
+												
+												if (jmp == null){
+													
+													ss(s, "&cThat player has never joined!");
+													
+												} else {
+													
+													String message = stitchString(args, 5);
+													
+													if (!(message.contains("%p"))){
+														
+														ss(s, "&cThe %p variable is not present in the message!");
+														
+													} else {
+														
+														jmp.addLeaveMessage(message);
+														
+														ss(s, new String[] {
+																
+																JM + "Added the leave message for the player &7" + jmp.getName() + "&7:",
+																translateMessage(s, message)
+																
+														});
+														
+													}
+													
+												}
+												
+											}
+											
+										} else {
+											
+											String message = stitchString(args, 3);
+											
+											if (!(message.contains("%p"))){
+												
+												ss(s, "&cThe %p variable is not present in the message!");
+												
+											} else {
+												
+												main.getUtils().addLeaveMessage(message);
+												
+												ss(s, new String[] {
+														
+														JM + "Added the leave message:",
+														translateMessage(s, message)
+														
+												});
+												
+											}
+											
+										}
+										
+									}
+									
+								}
 								
 								break;
 								
 							case "remove":
 								
+								if (checkPerm(s, "jm.remove.leave")){
+									
+									if (args.length == 2){
+										
+										ss(s, "&c/jm leave remove <id>");
+										
+									} else {
+										
+										if (args[2].equalsIgnoreCase("player")){
+											
+											if (args.length < 5){
+												
+												ss(s, "&c/jm leave remove player <player> <id>");
+												
+											} else {
+												
+												JMPlayer jmp = main.getUtils().getPlayer(args[3]);
+												
+												if (jmp == null){
+													
+													ss(s, "&cThat player has never joined!");
+													
+												} else {
+													
+													try {
+														
+														Integer.parseInt(args[4]);
+														
+													} catch (Exception e){
+														
+														ss(s, "&cThe ID you entered is not a valid number!");
+														
+														return true;
+														
+													}
+													
+													if (jmp.getLeaveMessages().size() < Integer.parseInt(args[4]) + 1){
+														
+														ss(s, "The player &7" + jmp.getName() + " &7does not have the ID!");
+														
+													} else {
+														
+														String message = jmp.getLeaveMessages().get(Integer.parseInt(args[4]));												
+														jmp.removeLeaveMessage(message);
+														
+														ss(s, new String[] {
+																
+																JM + "Removed the leave message for the player &7" + jmp.getName() + "&7:",
+																translateMessage(s, message)
+																
+														});
+														
+													}
+													
+												}
+												
+											}
+											
+										} else {
+											
+											try {
+												
+												Integer.parseInt(args[2]);
+												
+											} catch (Exception e){
+												
+												ss(s, "&cThe ID you entered is not a valid number!");
+												
+												return true;
+												
+											}
+											
+											if (main.getUtils().getLeaveMessages().size() < Integer.parseInt(args[2]) + 1){
+												
+												ss(s, "ID not found!");
+												
+											} else {
+												
+												String message = main.getUtils().getLeaveMessages().get(Integer.parseInt(args[2]));												
+												main.getUtils().removeLeaveMessage(message);
+												
+												ss(s, new String[] {
+														
+														JM + "Removed the leave message:",
+														translateMessage(s, message)
+														
+												});
+												
+											}
+											
+										}
+										
+									}
+									
+								}
 								
 								break;
 								
